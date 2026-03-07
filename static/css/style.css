@@ -228,6 +228,11 @@ a {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    min-width: 0;
+    /* prevent flex child from overflowing */
+    overflow-x: hidden;
+    max-width: calc(100vw - 280px);
+    /* sidebar is 280px */
 }
 
 .top-bar {
@@ -270,7 +275,9 @@ a {
     flex: 1;
     padding: 3rem;
     border-radius: 24px;
+    overflow-x: hidden;
     overflow-y: auto;
+    min-width: 0;
 }
 
 /* ==========================================================================
@@ -667,6 +674,9 @@ a {
     padding: 10px 16px;
     border-bottom: 1px solid var(--glass-border);
     white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .data-table tr:last-child td {
@@ -778,6 +788,8 @@ a {
 
 .chart-wide {
     grid-column: span 2;
+    min-width: 0;
+    /* prevent overflow in grid */
 }
 
 .chart-card h3 {

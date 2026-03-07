@@ -19,6 +19,16 @@ def query(sql, params=None):
     conn.close()
     return df
 
+def query_table(table, cols=None, limit=10):
+    """Returns a pandas DataFrame from the given table, optionally selecting specific columns."""
+    if not os.path.exists(DB_PATH):
+        return pd.DataFrame()
+    conn = sqlite3.connect(DB_PATH)
+    col_clause = ', '.join(f'"{c}"' for c in cols) if cols else '*'
+    df = pd.read_sql(f"SELECT {col_clause} FROM {table} LIMIT {limit}", conn)
+    conn.close()
+    return df
+
 def get_db_stats():
     tables = {
         'charging_stations': 'Charging Stations',
@@ -59,7 +69,8 @@ def dashboard_charging():
     if sel_type != 'All':
         df = df[df['Charger_Class'] == sel_type]
 
-    preview = df.head(10).to_html(classes='data-table', index=False, border=0)
+    PREVIEW_COLS = ['region', 'type', 'power', 'service', 'Charger_Class', 'Power_kW', 'Est_Charge_Time_60kWh_hr']
+    preview = df[PREVIEW_COLS].head(10).to_html(classes='data-table', index=False, border=0)
     return render_template('dashboard_charging.html',
         title='Charging Pattern and Usage Analysis',
         badge='Scenario 1', badge_class='badge-blue',
@@ -84,7 +95,8 @@ def dashboard_battery():
     if sel_segment != 'All':
         df = df[df['Price_Segment'] == sel_segment]
 
-    preview = df.head(10).to_html(classes='data-table', index=False, border=0)
+    PREVIEW_COLS = ['Brand', 'Model', 'PowerTrain', 'Range_Km', 'Efficiency_WhKm', 'Cost_per_100km_EUR', 'Performance_Score', 'Price_Segment']
+    preview = df[[c for c in PREVIEW_COLS if c in df.columns]].head(10).to_html(classes='data-table', index=False, border=0)
     return render_template('dashboard_battery.html',
         title='Battery Performance vs. Driving Range',
         badge='Scenario 2', badge_class='badge-green',
@@ -109,7 +121,8 @@ def dashboard_efficiency():
     if sel_drive != 'All':
         df = df[df['Efficiency_Rating'] == sel_drive]
 
-    preview = df.head(10).to_html(classes='data-table', index=False, border=0)
+    PREVIEW_COLS = ['Name', 'Drive', 'Range_km', 'Efficiency_Wh_km', 'Cost_per_100km_EUR', 'Efficiency_Rating', 'Range_Category', 'Annual_Savings_EUR']
+    preview = df[[c for c in PREVIEW_COLS if c in df.columns]].head(10).to_html(classes='data-table', index=False, border=0)
     return render_template('dashboard_efficiency.html',
         title='Comparative EV Model Efficiency Dashboard',
         badge='Scenario 3', badge_class='badge-purple',

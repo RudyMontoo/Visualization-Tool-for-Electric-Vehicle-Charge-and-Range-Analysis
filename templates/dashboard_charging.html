@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block breadcrumb %}Dashboards / <span class="highlight">{{ title }}</span>{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <div class="title-area">
+        <span class="badge {{ badge_class }}">{{ badge }}</span>
+        <h1>{{ title }}</h1>
+        <p class="scenario-text">{{ scenario }}</p>
+    </div>
+</div>
+
+<!-- Filters -->
+<form class="filter-bar glass-panel-light" method="GET" action="/dashboard/charging">
+    <span class="filter-label">🔍 Filters:</span>
+    <div class="filter-group">
+        <label>Region</label>
+        <select name="region" onchange="this.form.submit()">
+            {% for r in regions %}<option value="{{ r }}" {{ 'selected' if r==sel_region }}>{{ r }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <label>Charger Type</label>
+        <select name="type" onchange="this.form.submit()">
+            {% for t in types %}<option value="{{ t }}" {{ 'selected' if t==sel_type }}>{{ t }}</option>{% endfor %}
+        </select>
+    </div>
+    <span class="filter-count">{{ total }} stations shown</span>
+</form>
+
+<!-- Charts Row -->
+<div class="charts-grid">
+    <div class="chart-card glass-panel-light">
+        <h3>Stations by Region (Top 10)</h3>
+        <canvas id="chartRegion"></canvas>
+    </div>
+    <div class="chart-card glass-panel-light">
+        <h3>Charger Type Distribution</h3>
+        <canvas id="chartType"></canvas>
+    </div>
+    <div class="chart-card glass-panel-light">
+        <h3>Power Output Distribution</h3>
+        <canvas id="chartPower"></canvas>
+    </div>
+</div>
+
+<!-- Tableau Embed -->
+<div class="tableau-container glass-panel-light">
+    <div class="tableau-placeholder">
+        <div class="placeholder-icon">📊</div>
+        <h3>Paste Tableau Embed Code Here</h3>
+        <p>Data source: <code>data/charging_stations_prepared.csv</code></p>
+        <div class="instructions">
+            <ol>
+                <li>Connect Tableau to <strong>data/charging_stations_prepared.csv</strong></li>
+                <li>Build dashboard &amp; publish to Tableau Public</li>
+                <li>Click <em>Share → Embed Code</em> and paste it here</li>
+            </ol>
+        </div>
+        <!-- PASTE TABLEAU PUBLIC EMBED CODE HERE -->
+    </div>
+</div>
+
+<!-- Data Preview -->
+{% if preview %}
+<div class="preview-section">
+    <h3>📋 Live Data Preview — <code>charging_stations_prepared</code> (first 10 rows)</h3>
+    <div class="table-wrapper">{{ preview | safe }}</div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartDefaults = {
+        color: '#94a3b8',
+        plugins: { legend: { labels: { color: '#94a3b8' } } },
+        scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+    };
+
+    fetch('/api/charging/by-region').then(r => r.json()).then(d => {
+        new Chart(document.getElementById('chartRegion'), {
+            type: 'bar',
+            data: { labels: d.labels, datasets: [{ label: 'Stations', data: d.values, backgroundColor: 'rgba(59,130,246,0.7)', borderRadius: 6 }] },
+            options: { ...chartDefaults, plugins: { legend: { display: false } } }
+        });
+    });
+    fetch('/api/charging/by-type').then(r => r.json()).then(d => {
+        new Chart(document.getElementById('chartType'), {
+            type: 'doughnut',
+            data: { labels: d.labels, datasets: [{ data: d.values, backgroundColor: ['rgba(59,130,246,0.8)', 'rgba(16,185,129,0.8)', 'rgba(139,92,246,0.8)'], borderWidth: 0 }] },
+            options: { plugins: { legend: { labels: { color: '#94a3b8' } } } }
+        });
+    });
+    fetch('/api/charging/by-power').then(r => r.json()).then(d => {
+        new Chart(document.getElementById('chartPower'), {
+            type: 'bar',
+            data: { labels: d.labels, datasets: [{ label: 'Stations', data: d.values, backgroundColor: 'rgba(16,185,129,0.7)', borderRadius: 6 }] },
+            options: { ...chartDefaults, indexAxis: 'y', plugins: { legend: { display: false } } }
+        });
+    });
+</script>
+{% endblock %}

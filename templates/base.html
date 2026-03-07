@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EV Analytics Hub</title>
     <!-- Google Fonts for Modern Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
-    
+
     <!-- Background Animated Gradients -->
     <div class="bg-gradient-orb orb-1"></div>
     <div class="bg-gradient-orb orb-2"></div>
@@ -23,7 +27,7 @@
                 <div class="logo-icon">⚡</div>
                 <h2>EV Analytics<br><span>Hub</span></h2>
             </div>
-            
+
             <ul class="nav-links">
                 <li>
                     <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}">
@@ -32,18 +36,28 @@
                 </li>
                 <li class="nav-section">Dashboards</li>
                 <li>
-                    <a href="{{ url_for('dashboard_charging') }}" class="{{ 'active' if request.endpoint == 'dashboard_charging' else '' }}">
+                    <a href="{{ url_for('dashboard_charging') }}"
+                        class="{{ 'active' if request.endpoint == 'dashboard_charging' else '' }}">
                         <span class="nav-icon">🔌</span> Charging Patterns
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_for('dashboard_battery') }}" class="{{ 'active' if request.endpoint == 'dashboard_battery' else '' }}">
+                    <a href="{{ url_for('dashboard_battery') }}"
+                        class="{{ 'active' if request.endpoint == 'dashboard_battery' else '' }}">
                         <span class="nav-icon">🔋</span> Battery Health
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_for('dashboard_efficiency') }}" class="{{ 'active' if request.endpoint == 'dashboard_efficiency' else '' }}">
+                    <a href="{{ url_for('dashboard_efficiency') }}"
+                        class="{{ 'active' if request.endpoint == 'dashboard_efficiency' else '' }}">
                         <span class="nav-icon">🏎️</span> EV Efficiency
+                    </a>
+                </li>
+                <li class="nav-section">Analytics</li>
+                <li>
+                    <a href="{{ url_for('performance') }}"
+                        class="{{ 'active' if request.endpoint == 'performance' else '' }}">
+                        <span class="nav-icon">⚙️</span> Performance Report
                     </a>
                 </li>
             </ul>
@@ -78,10 +92,11 @@
             const orbs = document.querySelectorAll('.bg-gradient-orb');
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
-            
+
             orbs[0].style.transform = `translate(${x * 30}px, ${y * 30}px)`;
             orbs[1].style.transform = `translate(${x * -40}px, ${y * -40}px) scale(1.1)`;
         });
     </script>
 </body>
+
 </html>

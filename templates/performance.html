@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block breadcrumb %}Performance Testing{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+    <div class="title-area">
+        <span class="badge badge-blue">Performance Testing</span>
+        <h1>Database & Visualization Performance Report</h1>
+        <p class="scenario-text">Automated analysis of data volume, calculated fields, filter coverage, and
+            visualization count.</p>
+    </div>
+</div>
+
+<div class="perf-grid" id="perf-grid">
+    <div class="perf-card glass-panel-light" id="card-calcfields">
+        <div class="perf-icon">🧮</div>
+        <div class="perf-value" id="calc-fields">—</div>
+        <div class="perf-label">Calculated Fields</div>
+    </div>
+    <div class="perf-card glass-panel-light">
+        <div class="perf-icon">📊</div>
+        <div class="perf-value" id="viz-count">—</div>
+        <div class="perf-label">Visualizations / Graphs</div>
+    </div>
+    <div class="perf-card glass-panel-light">
+        <div class="perf-icon">💾</div>
+        <div class="perf-value" id="db-size">—</div>
+        <div class="perf-label">DB Size (KB)</div>
+    </div>
+    <div class="perf-card glass-panel-light">
+        <div class="perf-icon">🔍</div>
+        <div class="perf-value">6</div>
+        <div class="perf-label">Data Filters Implemented</div>
+    </div>
+</div>
+
+<div class="preview-section" style="margin-top:2rem">
+    <h3>📋 Data Rendered per Table</h3>
+    <div class="table-wrapper">
+        <table class="data-table" id="perf-table">
+            <thead>
+                <tr>
+                    <th>Table Name</th>
+                    <th>Rows Rendered</th>
+                    <th>Columns</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody id="perf-tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    fetch('/api/performance/stats').then(r => r.json()).then(d => {
+        document.getElementById('calc-fields').innerText = d.calc_fields;
+        document.getElementById('viz-count').innerText = d.visualizations;
+        document.getElementById('db-size').innerText = d.db_size_kb;
+        const tbody = document.getElementById('perf-tbody');
+        d.tables.forEach(t => {
+            const type = t.table.includes('prepared') ? '✅ Prepared (with Calc. Fields)' : '📥 Raw';
+            tbody.innerHTML += `<tr>
+            <td><code>${t.table}</code></td>
+            <td>${t.rows.toLocaleString()}</td>
+            <td>${t.columns}</td>
+            <td>${type}</td>
+        </tr>`;
+        });
+    });
+</script>
+{% endblock %}

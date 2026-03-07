@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}Overview{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>Welcome to the <span class="highlight">EV Data Analytics Hub</span></h1>
+    <p class="subtitle">An interactive visualization suite powered by data modeling and Tableau integration.</p>
+
+    <div class="stats-row">
+        <div class="stat-card glass-panel-light">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-info">
+                <h3>{{ stats.get('charging_stations', 0) }}</h3>
+                <p>Charging Stations</p>
+            </div>
+        </div>
+        <div class="stat-card glass-panel-light">
+            <div class="stat-icon">🚗</div>
+            <div class="stat-info">
+                <h3>{{ stats.get('ev_global_database', 0) }}</h3>
+                <p>Global EV Models</p>
+            </div>
+        </div>
+        <div class="stat-card glass-panel-light">
+            <div class="stat-icon">🔋</div>
+            <div class="stat-info">
+                <h3>{{ stats.get('ev_car_data_clean', 0) }}</h3>
+                <p>Battery Records</p>
+            </div>
+        </div>
+        <div class="stat-card glass-panel-light">
+            <div class="stat-icon">🇮🇳</div>
+            <div class="stat-info">
+                <h3>{{ stats.get('ev_india_models', 0) }}</h3>
+                <p>India EV Models</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="scenarios-grid">
+    <div class="scenario-card glass-panel-light">
+        <div class="card-header">
+            <span class="badge badge-blue">Scenario 1</span>
+            <h3>Charging Patterns</h3>
+        </div>
+        <p>Aarav, a city energy planner, uses this to understand when and where people are charging their EVs.
+            Dashboards display peak hours, neighborhood demands, and power consumption trends to ensure grid stability.
+        </p>
+        <a href="{{ url_for('dashboard_charging') }}" class="btn-primary">View Dashboard →</a>
+    </div>
+
+    <div class="scenario-card glass-panel-light">
+        <div class="card-header">
+            <span class="badge badge-green">Scenario 2</span>
+            <h3>Battery Performance</h3>
+        </div>
+        <p>Meera, a fleet manager, oversees vehicles where battery health directly impacts operations. This dashboard
+            tracks efficiency, actual vs. predicted range, and temperature factors to reduce downtime.</p>
+        <a href="{{ url_for('dashboard_battery') }}" class="btn-primary">View Dashboard →</a>
+    </div>
+
+    <div class="scenario-card glass-panel-light">
+        <div class="card-header">
+            <span class="badge badge-purple">Scenario 3</span>
+            <h3>Model Efficiency</h3>
+        </div>
+        <p>Ravi is purchasing his first EV. This comparative dashboard contrasts models on price, range, efficiency
+            (Wh/mi), and charging cost, guiding an eco-friendly and budget-aware purchase decision.</p>
+        <a href="{{ url_for('dashboard_efficiency') }}" class="btn-primary">View Dashboard →</a>
+    </div>
+</div>
+
+<!-- Team Section Info -->
+<div class="team-section glass-panel-light">
+    <h3>Project Workflow Status</h3>
+    <div class="workflow-steps">
+        <div class="step completed">
+            <div class="step-indicator">✓</div>
+            <div class="step-details">
+                <h4>Data Collection</h4>
+                <p>Riya Verma</p>
+            </div>
+        </div>
+        <div class="step completed">
+            <div class="step-indicator">✓</div>
+            <div class="step-details">
+                <h4>Storing in DB</h4>
+                <p>Rudra Pratapsingh</p>
+            </div>
+        </div>
+        <div class="step active">
+            <div class="step-indicator">3</div>
+            <div class="step-details">
+                <h4>Connect to Tableau</h4>
+                <p>Rudra Sharma</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-indicator">4</div>
+            <div class="step-details">
+                <h4>Data Prep & Story</h4>
+                <p>Saatyak Srivastav</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

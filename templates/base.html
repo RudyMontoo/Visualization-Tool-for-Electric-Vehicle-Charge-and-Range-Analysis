@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Analytics Hub</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    
+    <!-- Background Animated Gradients -->
+    <div class="bg-gradient-orb orb-1"></div>
+    <div class="bg-gradient-orb orb-2"></div>
+    <div class="bg-gradient-orb orb-3"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <div class="logo-icon">⚡</div>
+                <h2>EV Analytics<br><span>Hub</span></h2>
+            </div>
+            
+            <ul class="nav-links">
+                <li>
+                    <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' else '' }}">
+                        <span class="nav-icon">🏠</span> Overview
+                    </a>
+                </li>
+                <li class="nav-section">Dashboards</li>
+                <li>
+                    <a href="{{ url_for('dashboard_charging') }}" class="{{ 'active' if request.endpoint == 'dashboard_charging' else '' }}">
+                        <span class="nav-icon">🔌</span> Charging Patterns
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('dashboard_battery') }}" class="{{ 'active' if request.endpoint == 'dashboard_battery' else '' }}">
+                        <span class="nav-icon">🔋</span> Battery Health
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('dashboard_efficiency') }}" class="{{ 'active' if request.endpoint == 'dashboard_efficiency' else '' }}">
+                        <span class="nav-icon">🏎️</span> EV Efficiency
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <p>Designed for<br><strong>Data Analytics</strong></p>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="top-bar glass-panel">
+                <div class="breadcrumbs">
+                    <span>EV Analytics Hq</span> / <span>{% block breadcrumb %}Overview{% endblock %}</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">👨‍💻</div>
+                    <span>Data Team</span>
+                </div>
+            </div>
+
+            <div class="content-wrapper glass-panel fade-in-up">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Micro-interactions Script -->
+    <script>
+        // Simple script to inject slight parallax on mouse move for background orbs
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.bg-gradient-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs[0].style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            orbs[1].style.transform = `translate(${x * -40}px, ${y * -40}px) scale(1.1)`;
+        });
+    </script>
+</body>
+</html>

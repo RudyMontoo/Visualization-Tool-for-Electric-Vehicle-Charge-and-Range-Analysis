@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}Dashboards / <span class="highlight">{{ title }}</span>{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="title-area">
+        <span class="badge {{ badge_class }}">{{ badge }}</span>
+        <h1>{{ title }}</h1>
+        <p class="scenario-text">{{ scenario }}</p>
+    </div>
+</div>
+
+<!-- Tableau Embed Area -->
+<div class="tableau-container glass-panel-light">
+    <!-- ================================================
+         REPLACE THE BLOCK BELOW WITH YOUR TABLEAU EMBED
+         Copy the embed snippet from Tableau Public and
+         paste it here, replacing the placeholder div.
+    ================================================ -->
+    <div class="tableau-placeholder">
+        <div class="placeholder-icon">📊</div>
+        <h3>Paste Tableau Embed Code Here</h3>
+        <p>Data source: <code>{{ data_source_name }}</code></p>
+        <div class="instructions">
+            <ol>
+                <li>Open Tableau Desktop → Connect to <strong>data/ev_analytics.db</strong> (SQLite) or use the CSVs in
+                    <strong>data/</strong></li>
+                <li>Build your dashboard for this scenario</li>
+                <li>Publish to <strong>Tableau Public</strong></li>
+                <li>Click <em>Share → Embed Code</em> and paste it here in <code>templates/dashboard.html</code></li>
+            </ol>
+        </div>
+        <!-- PASTE TABLEAU PUBLIC EMBED CODE HERE -->
+    </div>
+</div>
+
+<!-- Live Data Preview from SQLite -->
+{% if preview %}
+<div class="preview-section">
+    <h3>📋 Live Data Preview — <code>{{ table_name }}</code> (first 10 rows)</h3>
+    <div class="table-wrapper">
+        {{ preview | safe }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

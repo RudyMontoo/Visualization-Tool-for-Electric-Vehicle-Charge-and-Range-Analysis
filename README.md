@@ -1,6 +1,6 @@
 # Electric Vehicle Charge and Range Analysis Visualization Tool
 
-This repository contains the backend and Flask frontend for an Interactive Tableau-based Visualization Tool analyzing Electric Vehicle (EV) usage.
+This repository contains  the backend and Flask frontend for an Interactive Tableau-based Visualization Tool analyzing Electric Vehicle (EV) usage.
 
 ## Setup Instructions
 
